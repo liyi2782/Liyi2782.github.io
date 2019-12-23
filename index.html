@@ -1,123 +1,201 @@
 <!doctype html>
- <html>
- <head>
- <meta charset="utf-8">
- <title>LOVE</title>
- </head>
- <body>
- <canvas id="canvas"></canvas>
- <script>
- var canvas = document.getElementById('canvas'),
- ctx = canvas.getContext('2d'),
- canvasW = canvas.width = window.innerWidth,
- canvasH = canvas.height = window.innerHeight,
- canvasWHalf = canvasW / 2,
- canvasHHalf = canvasH / 2,
- xoff = canvasWHalf - 306,
- yoff = 50,
- bg = '00061a',
- id = 0,
- raindrops = [],
- minSize = 1,
- maxSize = 4,
- minSpeed = 5,
- maxSpeed = 20,
- minHue = 0,
- maxHue = 360,
- maxAmount = 50;
- function random(min, max) {
- if (arguments.length < 2) {
-  max = min;
-  min = 0;
- }
- return Math.floor(Math.random() * (max - min) + min);
- }
- function hexToRGB(hex, opacity) {
- var rgb = '';
- hex.match(/.{2}/g).forEach(function(n) {
-  rgb += (parseInt(n, 16)) + ',';
- });
- return 'rgba(' + rgb + opacity + ')';
- }
- function draw() {
- // Heart
- ctx.fillStyle = hexToRGB(bg, '0.1');
- ctx.beginPath();
- // Left half
- ctx.moveTo(0, 0);
- ctx.lineTo(canvasWHalf, 0);
- ctx.lineTo(304 + xoff, 97 + yoff);
- ctx.bezierCurveTo(282 + xoff, -5 + yoff, 80 + xoff, -6 + yoff, 76 + xoff, 165 + yoff);
- ctx.bezierCurveTo(74 + xoff, 251 + yoff, 184 + xoff, 300 + yoff, 304 + xoff, 447 + yoff);
- ctx.lineTo(canvasWHalf, canvasH);
- ctx.lineTo(0, canvasH);
- // Right half
- ctx.moveTo(canvasW, 0);
- ctx.lineTo(canvasWHalf, 0);
- ctx.lineTo(304 + xoff, 97 + yoff);
- ctx.bezierCurveTo(326 + xoff, 5 + yoff, 528 + xoff, 6 + yoff, 532 + xoff, 165 + yoff);
- ctx.bezierCurveTo(534 + xoff, 251 + yoff, 424 + xoff, 300 + yoff, 304 + xoff, 447 + yoff);
- ctx.lineTo(canvasWHalf, canvasH);
- ctx.lineTo(canvasW, canvasH);
- ctx.closePath();
- ctx.fill();
- // Raindrops
- for (var i = 1; i < id; i++) {
-  raindrops[i].fall();
- };
- }
- var Raindrop = function() {
- id++;
- this.y = random(-canvasH);
- this.x = random(canvasW);
- this.size = random(minSize, maxSize);
- this.speed = random(minSpeed, maxSpeed);
- this.color = 'hsl(' + random(minHue, maxHue) + ',100%,100%)';
- this.origColor = this.color;
- this.id = id;
- raindrops[id] = this;
- };
- Raindrop.prototype.fall = function() {
- this.y += this.speed;
- if (this.y >= canvasH) {
-  this.y = random(-canvasH);
-  this.x = random(canvasW);
- }
- ctx.save();
- ctx.beginPath();
- var gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
- gradient.addColorStop(0, '#fff');
- gradient.addColorStop(0.5, this.color);
- gradient.addColorStop(1, hexToRGB(bg, 0));
- ctx.rect(this.x, this.y, this.size, maxSpeed);
- ctx.fillStyle = gradient;
- ctx.fill();
- ctx.closePath();
- ctx.restore();
- };
- (function init() {
- ctx.fillStyle = '#' + bg;
- ctx.fillRect(0, 0, canvasW, canvasH);
- for (var i = 0; i < maxAmount; i++) {
-  new Raindrop();
- }
- }());
- function animate() {
- draw();
- window.requestAnimationFrame(animate);
- }
- window.requestAnimationFrame(animate);
- function mouseTrail(x, y) {
- ctx.save();
- ctx.globalCompositeOperation = 'overlay';
- ctx.fillStyle = 'rgba(255,255,255,0.1)';
- ctx.arc(x, y, 50, 0, Math.PI * 2);
- ctx.fill();
- ctx.restore();
- }
- window.addEventListener('mousemove', function(cursor) {
- mouseTrail(cursor.x, cursor.y);
- });
- </script>
- </body>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta charset="utf-8">
+<title>I ！</title>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="functions.js"></script>
+<!-- <link href="favicon.ico" rel="shortcut icon" /> -->
+
+<script type="text/javascript">
+    var offsetX = $("#loveHeart").width() / 2;
+    var offsetY = $("#loveHeart").height() / 2 - 55;
+    var together = new Date();
+    together.setFullYear(2019, 9, 22);
+    together.setHours(22);
+    together.setMinutes(58);
+    together.setSeconds(0);
+    together.setMilliseconds(0);
+    
+    if (!document.createElement('canvas').getContext) {
+      var msg = document.createElement("div");
+      msg.id = "errorMsg";
+      msg.innerHTML = "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+"; 
+      document.body.appendChild(msg);
+      $("#code").css("display", "none")
+      $("#copyright").css("position", "absolute");
+      $("#copyright").css("bottom", "10px");
+        document.execCommand("stop");
+    } else {
+      setTimeout(function () {
+        startHeartAnimation();
+      }, 5000);
+
+      timeElapse(together);
+      setInterval(function () {
+        timeElapse(together);
+      }, 500);
+
+      adjustCodePosition();
+      $("#code").typewriter();
+    }
+  </script>
+<style>
+body{
+  overflow: hidden;
+  margin: 0;
+  font-size: 22px;
+  color: hsla(0, 90%, 67%, 0.7098039215686275);;
+  font-weight: bold;
+}
+h1{
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  transform:translateY(-50%);
+  font-family: 'Love Ya Like A Sister', cursive;
+  font-size: 40px;
+  color: #f75f5f;
+  padding: 0 20px;
+}
+h1 span{
+  font-size:20px;
+}
+#loveHeart{
+  position: absolute;
+  top: 15%;
+  left: 10%;
+}
+.font{
+  position: absolute;
+  top: 45%;
+  left: 10%;
+  font-size: 14px;
+}
+#messages{
+  margin-left: 15px; 
+}
+#words{
+  padding: 15px  40px;
+  background: #ffebeb;
+  border-radius: 9px;
+}
+</style>
+
+</head>
+<body>
+
+<div id="loveHeart">
+  <div id="words"><p>老婆！咱们在一起已经：</p>
+    <div id="messages">
+      <div id="elapseClock"></div>
+    </div>
+  </div>
+</div>
+<div class="font">
+  <p>时间不知从哪说起,真爱就来了，我们要好好把握哦。</p>
+  <p>不管面临多大的压力,不管前面的路如何崎岖.</p>
+  <p>不管经历过什么,我依然坚信最浪漫的事就是和你一起慢慢变老.</p>
+  <p>与你相识是一种缘份，与你相恋是一份美好，与你相伴是一种幸福.</p>
+</div>
+
+<canvas></canvas> 
+
+<script>
+// var canvas = document.querySelector("canvas"),
+ctx = canvas.getContext("2d");
+
+var ww,wh;
+
+function onResize(){
+  ww = canvas.width = window.innerWidth;
+  wh = canvas.height = window.innerHeight;
+}
+
+ctx.strokeStyle = "red";
+ctx.shadowBlur = 25;
+ctx.shadowColor = "hsla(0, 100%, 60%,0.5)";
+
+var precision = 100;
+var hearts = [];
+var mouseMoved = false;
+function onMove(e){
+  mouseMoved = true;
+  if(e.type === "touchmove"){
+    hearts.push(new Heart(e.touches[0].clientX, e.touches[0].clientY));
+    hearts.push(new Heart(e.touches[0].clientX, e.touches[0].clientY));
+  }
+  else{
+    hearts.push(new Heart(e.clientX, e.clientY));
+    hearts.push(new Heart(e.clientX, e.clientY));
+  }
+}
+
+var Heart = function(x,y){
+  this.x = x || Math.random()*ww;
+  this.y = y || Math.random()*wh;
+  this.size = Math.random()*2 + 1;
+  this.shadowBlur = Math.random() * 10;
+  this.speedX = (Math.random()+0.2-0.6) * 8;
+  this.speedY = (Math.random()+0.2-0.6) * 8;
+  this.speedSize = Math.random()*0.05 + 0.01;
+  this.opacity = 1;
+  this.vertices = [];
+  for (var i = 0; i < precision; i++) {
+    var step = (i / precision - 0.5) * (Math.PI * 2);
+    var vector = {
+      x : (15 * Math.pow(Math.sin(step), 3)),
+      y : -(13 * Math.cos(step) - 5 * Math.cos(2 * step) - 2 * Math.cos(3 * step) - Math.cos(4 * step)) 
+    }
+    this.vertices.push(vector);
+  }
+}
+
+Heart.prototype.draw = function(){
+  this.size -= this.speedSize;
+  this.x += this.speedX;
+  this.y += this.speedY;
+  ctx.save();
+  ctx.translate(-1000,this.y);
+  ctx.scale(this.size, this.size);
+  ctx.beginPath();
+  for (var i = 0; i < precision; i++) {
+    var vector = this.vertices[i];
+    ctx.lineTo(vector.x, vector.y);
+  }
+  ctx.globalAlpha = this.size;
+  ctx.shadowBlur = Math.round((3 - this.size) * 10);
+  ctx.shadowColor = "hsla(0, 100%, 60%,0.5)";
+  ctx.shadowOffsetX = this.x + 1000;
+  ctx.globalCompositeOperation = "screen"
+  ctx.closePath();
+  ctx.fill()
+  ctx.restore();
+};
+
+
+function render(a){
+  requestAnimationFrame(render);
+
+  hearts.push(new Heart())
+  ctx.clearRect(0,0,ww,wh);
+  for (var i = 0; i < hearts.length; i++) {
+    hearts[i].draw();
+    if(hearts[i].size <= 0){
+      hearts.splice(i,1);
+      i--;
+    }
+  }
+}
+
+onResize();
+window.addEventListener("mousemove", onMove);
+window.addEventListener("touchmove", onMove);
+window.addEventListener("resize", onResize);
+requestAnimationFrame(render);        
+</script>
+</body>
 </html>
