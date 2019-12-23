@@ -4,8 +4,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta charset="utf-8">
 <title>I ！</title>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="functions.js"></script>
 <!-- <link href="favicon.ico" rel="shortcut icon" /> -->
 
 <script type="text/javascript">
@@ -45,41 +45,34 @@
 body{
   overflow: hidden;
   margin: 0;
-  font-size: 22px;
-  color: hsla(0, 90%, 67%, 0.7098039215686275);;
+  font-size: 1.2rem;
   font-weight: bold;
 }
-h1{
-  position: fixed;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  transform:translateY(-50%);
-  font-family: 'Love Ya Like A Sister', cursive;
-  font-size: 40px;
-  color: #f75f5f;
-  padding: 0 20px;
-}
-h1 span{
-  font-size:20px;
-}
+
 #loveHeart{
+  width: 80%;
   position: absolute;
-  top: 15%;
-  left: 10%;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(247, 95, 95, 0.9);
+  font-family:"楷书";
 }
 .font{
+
+  width: 80%;
   position: absolute;
-  top: 45%;
-  left: 10%;
-  font-size: 14px;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.9rem;
+  color:  rgba(245, 115, 115, 0.8);
 }
 #messages{
   margin-left: 15px; 
 }
 #words{
-  padding: 15px  40px;
+  padding: 15px  20px;
   background: #ffebeb;
   border-radius: 9px;
 }
@@ -89,7 +82,7 @@ h1 span{
 <body>
 
 <div id="loveHeart">
-  <div id="words"><p>老婆！咱们在一起已经：</p>
+  <div id="words"><p  face="黑体">老婆！咱们在一起已经：</p>
     <div id="messages">
       <div id="elapseClock"></div>
     </div>
@@ -105,7 +98,7 @@ h1 span{
 <canvas></canvas> 
 
 <script>
-// var canvas = document.querySelector("canvas"),
+var canvas = document.querySelector("canvas"),
 ctx = canvas.getContext("2d");
 
 var ww,wh;
